@@ -13,6 +13,7 @@ You need to filter out what we ask you.
 **Example:**  
 Give me the roots that contain `TIME` of `240509`.  
 Part of the answer is shown below.
+
 ![image](https://github.com/user-attachments/assets/c9210671-2466-4cca-9476-0155d150b777)
 
 ## Homework Requirements
