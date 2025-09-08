@@ -1,6 +1,5 @@
 # Experiment Report
 
-
 ## Introduction
 
 In this report, we describe the design and implementation of a custom
@@ -79,3 +78,9 @@ containing file paths:
 
 You can view its content from the above JSON file (in zip), with the
 same format as the CSI_data dataset.
+
+## Code
+You can run on colab or local
+<a target="_blank" href="https://colab.research.google.com/github/kailee0422/Deep-Learning/blob/main/HW1/DL_A1.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
