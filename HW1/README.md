@@ -1,58 +1,81 @@
-# DL Lab 1: Dataset and DataLoader
+# Experiment Report
 
-## Lab Objective
-In this assignment, you should use PyTorch, `Dataset` and `DataLoader` in `torch.nn` to filter the root of files we assigned.
 
-## Dataset Introduction
-`CSI_data.json` contains three classes: `train`, `val`, and `test`. Each class has multiple roots of different files, which formats are:
+## Introduction
 
-`CLASS_NAME/npy/THE_GENDER_AND_COUNT/POSITION/TIME/FILE_NAME`
+In this report, we describe the design and implementation of a custom
+`CSI_data` class and its integration with PyTorch's `DataLoader`. The
+focus is on filtering data based on root name of file, various
+requirements, and exporting the results to JSON files for different
+dataset splits (**train, val, test**).
 
-You need to filter out what we ask you.
+## Materials and Methods
 
-**Example:**  
-Give me the roots that contain `TIME` of `240509`.  
-Part of the answer is shown below.
+This experiment utilizes the `CSI_data` dataset, which is divided into
+train, val, and test splits. The objective is to output results based on
+five different requirements. To achieve this, several key functions were
+designed to process and filter the data.
 
-![image](https://github.com/user-attachments/assets/c9210671-2466-4cca-9476-0155d150b777)
+-   The data is loaded through the
+    `__init__(self, split='train', requirement=1)` function.
+    -   **split** specifies the dataset split (train, val, test).\
+    -   **requirement** defines the filtering criteria (five
+        requirements).
+-   The preprocessing is done via
+    `filter_data(self, data_split, requirement)` which filters and
+    formats the data.
 
-## Homework Requirements
-1. `CLASS_NAME` contains `Env3`.
-2. `THE_GENDER_AND_COUNT` contains 2 females with no limit on the number of males.
-3. `THE_GENDER_AND_COUNT` contains 1 female without any male.
-4. `TIME` contains from `5/6 18:13:07` to `5/7 23:24:34` (same as `240506_181307` to `240507_232434`).
-5. `CLASS_NAME` contains `Env3`, `THE_GENDER_AND_COUNT` contains just 1 male, `POSITION` contains `5_posi`, and `TIME` from `5/8 09:00` to `5/8 11:00`.
+The CSI_data.json file is split into **train, val, test**, each
+containing file paths:
 
-Save the answer for each requirement into an individual JSON file, named as follows:
+    CLASS_NAME/npy/THE_GENDER_AND_COUNT/POSITION/TIME/random_characters
 
-`A1_studentID_studentName_{requirement}.json`
+### Dataset Components
 
-Your submissions will include 5 JSON files, as shown below:
+-   **CLASS_NAME**: `Env0` to `Env5` for train, `val_set` and `test_set`
+    for val/test.\
+-   **THE_GENDER_AND_COUNT / POSITION**: Counts per class, visible in
+    output.\
+-   **TIME**: Format `YYMMDD_HHMMSS`.
 
-- `A1_studentID_studentName_1.json`
-- `A1_studentID_studentName_2.json`
-- `A1_studentID_studentName_3.json`
-- `A1_studentID_studentName_4.json`
-- `A1_studentID_studentName_5.json`
+### Requirements
 
-## Rules
-1. You should implement the homework by yourself. This assignment should be done individually. Please do not plagiarize the assignment. If plagiarism is found, the students involved will receive a score of zero.
-2. Only PyTorch is allowed in this lab.
-3. If the assignment format and files do not adhere to the regulations, the assignment score will be multiplied by 0.9.
-4. If the assignment is missing or incomplete for any item, the assignment score will be deducted proportionally to the incompleteness.
-5. If you submit your assignment late, your score will be multiplied by 0.9 for each day of delay.
+1.  **Requirement 1**: Check if `CLASS_NAME` contains `Env3`.\
+2.  **Requirement 2**: Identify entries containing **two females** in
+    `THE_GENDER_AND_COUNT`. Used counting instead of regex due to cases
+    like `F2M1M3F3`.\
+3.  **Requirement 3**: Regex
+    `re.match(r'Female?', THE_GENDER_AND_COUNT)` to find classes with
+    **one female and no males**.\
+4.  **Requirement 4**: Time filter `(start_time <= TIME <= end_time)`
+    for **5/6 18:13:07 → 5/7 23:24:34**.\
+5.  **Requirement 5**: Combination of four conditions:
+    -   `CLASS_NAME` contains `Env3`.\
+    -   Regex `re.match(r'Male?', THE_GENDER_AND_COUNT)` → only one
+        male.\
+    -   `POSITION` contains `5_posi`.\
+    -   `TIME` between **5/8 09:00 → 5/8 11:00**.
 
-## Submission
-1. Please submit your code and answer JSON file. The filename should be `A1_studentID_studentName.ipynb` and the JSON files mentioned before. Compress them into a ZIP file, and the filename should be `A1_studentID_studentName.zip`.
-2. Implement a `Dataset` and `DataLoader`.
-3. A Report in PDF format, with the filename `A1_studentID_studentName.pdf`. The report needs to explain how you designed the `Dataset` and `DataLoader`, and why the answers are correct. The report should be at most 2 pages.
+### Supporting Functions
 
-## Description of Code
-Your code must be submitted following the format provided by the TAs. Additional sections can be included as necessary.
+-   `__len__(self)`: Returns dataset size.\
+-   `__getitem__(self, index)`: Returns individual samples.
 
-## Assignment Evaluation
-- Code & model performances (40%)
-- Report (60%)
+### Output
 
-## Tips
-Clearly check the "Root name of the file."
+-   Results are saved as `A1_313834006_李崇楷_{req}.json`.\
+
+-   Outputs number of matches per split & requirement.\
+
+-   If no match:
+
+        {split} set, Requirement {requirement}: No matching data found.
+
+-   Saves with message:
+
+        Saved combined output for Requirement {requirement} to ./A1_313834006_李崇楷_{requirement}.json
+
+## Results
+
+You can view its content from the above JSON file (in zip), with the
+same format as the CSI_data dataset.
